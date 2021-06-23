@@ -63,19 +63,30 @@ export const Sidebar: React.FC<{
     const history = useHistory()
 
     useEffect(() => {
-      // Setting properties of select cusip drop down after components mount onto DOM
-      var label = document.getElementById('flexy').children[0].children[0] as HTMLElement;
-      label.style.color = "green";
-      label.style.fontSize = "20";
-      label.style.marginBottom = "10px";
-      label.style.fontWeight = "semiBold";
+      // Setting properties of elements in sidebar after components mount onto DOM
+      var label1 = document.getElementById('sidebarflex1').children[0].children[0] as HTMLElement;
+      label1.style.color = "green";
+      label1.style.fontSize = "20";
+      label1.style.marginBottom = "10px";
+      label1.style.fontWeight = "semiBold";
+      var inputBox1 = document.getElementById('sidebarflex1').childNodes[0].childNodes[1].childNodes[0].childNodes[0] as HTMLElement;
+      inputBox1.style.backgroundColor = "#1f2436"
+      inputBox1.style.borderColor = "#9B9EA3"
+      var inputBox1Text = document.getElementById('sidebarflex1').childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0] as HTMLElement;
+      inputBox1Text.style.color = "#9b9ea3"
+      
+      var inputBox2 = document.getElementById('sidebarflex2').children[1] as HTMLElement;
+      inputBox2.style.backgroundColor = "#1f2436"
+      inputBox2.style.borderColor = "#9B9EA3"
+      var inputBox2text = document.getElementById('sidebarflex2').children[1].children[0] as HTMLElement;
+      inputBox2text.style.color = "#9b9ea3"
     })
 
     return (
       <Flex flexDirection="column" pt="xxlarge" pb="xxlarge">
         <FlexItem
-          id="flexy"
-          borderBottom={`1px solid ${theme.colors.ui2}`}
+          id="sidebarflex1"
+          borderBottom={`1px solid #6c6c6c`}
           ml="large"
           mr="xlarge"
           pb="medium"
@@ -90,7 +101,7 @@ export const Sidebar: React.FC<{
             value={currentModel && currentModel.name}
           />
         </FlexItem>
-        <FlexItem ml="large" mr="xlarge" pt="medium">
+        <FlexItem id="sidebarflex2" ml="large" mr="xlarge" pt="medium">
           <Heading className="text" as="h5" fontWeight="semiBold" style={{ color: "green", fontSize: "20" }}>
             Explores
           </Heading>

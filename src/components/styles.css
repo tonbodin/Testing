@@ -35,10 +35,6 @@ html {
   box-sizing: inherit;
 }
 
-/* * {
-  color: red;
-} */
-
 html,
 body,
 div,
@@ -56,6 +52,7 @@ ol,
 ul,
 li,
 form,
+label,
 legend,
 table,
 header,
@@ -98,17 +95,9 @@ svg {
 
 body {
   background-color: #131722;
-  color: blueviolet;
-}
-
-h1 {
-  color: red;
-}
-
-label {
-  color: red;
 }
 
 span {
   color: green;
 }
+

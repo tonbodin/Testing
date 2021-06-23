@@ -56,6 +56,8 @@ import {
 import { QuickSearch } from "./QuickSearch"
 import humanize from "humanize-string"
 import { DIMENSION, MEASURE } from "./CategorizedLabel"
+import "./styles.css"
+import { ETIME } from "constants"
 
 export const Main = styled(Box as any)`
   position: relative;
@@ -93,6 +95,14 @@ export const defaultShowColumns = [
   "sql"
 ]
 
+function highlightBackground(e: any) {
+  e.target.style.backgroundColor = "#2A2E39"
+}
+
+function unhighlightBackground(e: any) {
+  e.target.style.backgroundColor = "#1f2436"
+}
+
 export const PanelFields: React.FC<{
   columns: ColumnDescriptor[]
   currentExplore: ILookmlModelExplore | null
@@ -120,193 +130,199 @@ export const PanelFields: React.FC<{
   me,
   permissions
 }) => {
-  const [search, setSearch] = useState("")
-  const [shownColumns, setShownColumns] = useState([
-    ...columns
-      .filter(d => {
-        return d.default
-      })
-      .map(d => d.rowValueDescriptor)
-  ])
-  const [hasDescription, setHasDescription] = useState([])
-  const [hasTags, setHasTags] = useState([])
-  const [hasComments, setHasComments] = useState([])
-  const [fieldTypes, setFieldTypes] = useState([])
-  const [selectedFields, setSelectedFields] = useState([])
+    const [search, setSearch] = useState("")
+    const [shownColumns, setShownColumns] = useState([
+      ...columns
+        .filter(d => {
+          return d.default
+        })
+        .map(d => d.rowValueDescriptor)
+    ])
+    const [hasDescription, setHasDescription] = useState([])
+    const [hasTags, setHasTags] = useState([])
+    const [hasComments, setHasComments] = useState([])
+    const [fieldTypes, setFieldTypes] = useState([])
+    const [selectedFields, setSelectedFields] = useState([])
 
-  const typeMaker = (field: ILookmlModelExploreField) => {
-    return humanize(field.type.split("_")[0])
-  }
+    const typeMaker = (field: ILookmlModelExploreField) => {
+      return humanize(field.type.split("_")[0])
+    }
 
-  if (loadingExplore) {
-    return (
-      <Main p="xxlarge">
-        <Flex alignItems="center" height="100%" justifyContent="center">
-          <Spinner />
-        </Flex>
-      </Main>
-    )
-  }
+    if (loadingExplore) {
+      return (
+        <Main p="xxlarge">
+          <Flex alignItems="center" height="100%" justifyContent="center">
+            <Spinner />
+          </Flex>
+        </Main>
+      )
+    }
 
-  if (
-    currentModel &&
-    currentExplore &&
-    currentModel.name === currentExplore.model_name
-  ) {
-    const fields = flatten(values(currentExplore.fields))
-      .map(f => typeMaker(f))
-      .filter((value, index, self) => self.indexOf(value) === index)
+    if (
+      currentModel &&
+      currentExplore &&
+      currentModel.name === currentExplore.model_name
+    ) {
+      const fields = flatten(values(currentExplore.fields))
+        .map(f => typeMaker(f))
+        .filter((value, index, self) => self.indexOf(value) === index)
 
-    const revivedComments = JSON.parse(comments)
-    const encExplores = Object.keys(revivedComments)
-    const commentObj = encExplores.includes(currentExplore.name)
-      ? revivedComments[currentExplore.name]
-      : (revivedComments[currentExplore.name] = {})
+      const revivedComments = JSON.parse(comments)
+      const encExplores = Object.keys(revivedComments)
+      const commentObj = encExplores.includes(currentExplore.name)
+        ? revivedComments[currentExplore.name]
+        : (revivedComments[currentExplore.name] = {})
 
-    const allFilters = hasDescription.concat(
-      hasTags,
-      hasComments,
-      fieldTypes,
-      selectedFields
-    )
-    const groups = orderBy(
-      toPairs(
-        groupBy(
-          flatten(values(currentExplore.fields)).filter(f => {
-            const commentFlag = !!(
-              commentObj[f.name] && commentObj[f.name].length > 0
-            )
-            return (
-              !f.hidden &&
-              (allFilters.length === 0 ||
-                ((hasDescription.length === 0 ||
-                  (hasDescription.includes("yes") && f.description) ||
-                  (hasDescription.includes("no") && !f.description)) &&
-                  (hasTags.length === 0 ||
-                    (hasTags.includes("yes") && f.tags.length > 0) ||
-                    (hasTags.includes("no") && f.tags.length === 0)) &&
-                  (hasComments.length === 0 ||
-                    (hasComments.includes("yes") && commentFlag) ||
-                    (hasComments.includes("no") && !commentFlag)) &&
-                  (fieldTypes.length === 0 ||
-                    (fieldTypes.includes("dimensions") &&
-                      f.category === DIMENSION) ||
-                    (fieldTypes.includes("measures") &&
-                      f.category === MEASURE)) &&
-                  (selectedFields.length === 0 ||
-                    selectedFields.includes(typeMaker(f)))))
-            )
-          }),
-          f => f.view_label
-        )
-      ),
-      ([group]) => group
-    )
-
-    return (
-      <Main pt="large">
-        <Flex
-          flexDirection="row"
-          justifyContent="space-between"
-          mt="large"
-          mb="xxlarge"
-          pl="xxlarge"
-          pr="xxlarge"
-        >
-          <FlexItem>
-            <Heading as="h1" fontWeight="semiBold">
-              {currentModel.label}
-            </Heading>
-            <Heading as="h4" variant="secondary">
-              Select a field for more information.
-            </Heading>
-          </FlexItem>
-          <FlexItem>
-            <ExternalLink target="_blank" href={exploreURL(currentExplore)}>
-              <ButtonOutline mr="small">Explore</ButtonOutline>
-            </ExternalLink>
-            <ViewOptions
-              columns={columns.filter(d => {
-                return d.rowValueDescriptor !== "comment"
-              })}
-              shownColumns={shownColumns}
-              setShownColumns={setShownColumns}
-            />
-          </FlexItem>
-        </Flex>
-        <Flex mt="xlarge" pl="xxlarge" pr="xxlarge">
-          <FlexItem width="350px">
-            <ExploreSearch
-              hideSearchIcon
-              placeholder="Filter fields in this Explore"
-              mt="medium"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setSearch(e.target.value)
-              }}
-              value={search}
-            />
-          </FlexItem>
-        </Flex>
-
-        <QuickSearch
-          selectedFields={selectedFields}
-          fields={fields}
-          fieldTypes={fieldTypes}
-          hasDescription={hasDescription}
-          hasTags={hasTags}
-          hasComments={hasComments}
-          setSelectedFields={setSelectedFields}
-          setFieldTypes={setFieldTypes}
-          setHasDescription={setHasDescription}
-          setHasTags={setHasTags}
-          setHasComments={setHasComments}
-          showComments={!permissions.disabled}
-        />
-
-        <Box>
-          {groups.map(group => {
-            if (group[1].length > 0) {
-              return (
-                <Fields
-                  columns={columns}
-                  explore={currentExplore}
-                  fields={group[1]}
-                  key={group[0]}
-                  label={group[0]}
-                  model={model}
-                  search={search}
-                  shownColumns={shownColumns}
-                  comments={comments}
-                  addComment={addComment}
-                  editComment={editComment}
-                  deleteComment={deleteComment}
-                  authors={authors}
-                  me={me}
-                  permissions={permissions}
-                />
+      const allFilters = hasDescription.concat(
+        hasTags,
+        hasComments,
+        fieldTypes,
+        selectedFields
+      )
+      const groups = orderBy(
+        toPairs(
+          groupBy(
+            flatten(values(currentExplore.fields)).filter(f => {
+              const commentFlag = !!(
+                commentObj[f.name] && commentObj[f.name].length > 0
               )
-            }
-          })}
-        </Box>
-      </Main>
-    )
-  } else {
-    return (
-      <FullPage>
-        <div style={{ width: "30%" }}>
-          <img
-            src={
-              "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
-            }
-            alt="Empty Image"
+              return (
+                !f.hidden &&
+                (allFilters.length === 0 ||
+                  ((hasDescription.length === 0 ||
+                    (hasDescription.includes("yes") && f.description) ||
+                    (hasDescription.includes("no") && !f.description)) &&
+                    (hasTags.length === 0 ||
+                      (hasTags.includes("yes") && f.tags.length > 0) ||
+                      (hasTags.includes("no") && f.tags.length === 0)) &&
+                    (hasComments.length === 0 ||
+                      (hasComments.includes("yes") && commentFlag) ||
+                      (hasComments.includes("no") && !commentFlag)) &&
+                    (fieldTypes.length === 0 ||
+                      (fieldTypes.includes("dimensions") &&
+                        f.category === DIMENSION) ||
+                      (fieldTypes.includes("measures") &&
+                        f.category === MEASURE)) &&
+                    (selectedFields.length === 0 ||
+                      selectedFields.includes(typeMaker(f)))))
+              )
+            }),
+            f => f.view_label
+          )
+        ),
+        ([group]) => group
+      )
+
+      return (
+        <Main pt="large">
+          <Flex
+            flexDirection="row"
+            justifyContent="space-between"
+            mt="large"
+            pl="xxlarge"
+            pr="xxlarge"
+          >
+            <FlexItem>
+              <Heading as="h1" fontWeight="semiBold" style={{ color: "green" }}>
+                {currentModel.label}
+              </Heading>
+              <Heading as="h4" variant="secondary" style={{ color: "green" }}>
+                Select a field for more information.
+            </Heading>
+            </FlexItem>
+            <FlexItem style={{ width: "290px" }} >
+              <ExternalLink
+                style={{ textDecoration: "none" }}
+                target="_blank" href={exploreURL(currentExplore)}
+                onMouseEnter={highlightBackground}
+                onMouseLeave={unhighlightBackground}
+              >
+                <ButtonOutline style={{ backgroundColor: "#1f2436", borderColor: "#9B9EA3", color: "#9B9EA3" }} width="130px" >
+                  Explore
+                </ButtonOutline>
+              </ExternalLink>
+              <ViewOptions
+                columns={columns.filter(d => {
+                  return d.rowValueDescriptor !== "comment"
+                })}
+                shownColumns={shownColumns}
+                setShownColumns={setShownColumns}
+              />
+            </FlexItem>
+          </Flex>
+          <Flex mt="6px" pl="xxlarge" pr="xxlarge">
+            <FlexItem width="350px">
+              <ExploreSearch
+                hideSearchIcon
+                placeholder="Filter fields in this Explore"
+                mt="medium"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setSearch(e.target.value)
+                }}
+                value={search}
+              />
+            </FlexItem>
+          </Flex>
+
+          <QuickSearch
+            selectedFields={selectedFields}
+            fields={fields}
+            fieldTypes={fieldTypes}
+            hasDescription={hasDescription}
+            hasTags={hasTags}
+            hasComments={hasComments}
+            setSelectedFields={setSelectedFields}
+            setFieldTypes={setFieldTypes}
+            setHasDescription={setHasDescription}
+            setHasTags={setHasTags}
+            setHasComments={setHasComments}
+            showComments={!permissions.disabled}
           />
-        </div>
-        <IntroText>
-          Click on one of the Explores to the left to begin searching through
-          your data. You’ll see labels, descriptions, SQL definitions, and more
-          for each field.
+
+          <Box>
+            {groups.map(group => {
+              if (group[1].length > 0) {
+                return (
+                  <Fields
+                    columns={columns}
+                    explore={currentExplore}
+                    fields={group[1]}
+                    key={group[0]}
+                    label={group[0]}
+                    model={model}
+                    search={search}
+                    shownColumns={shownColumns}
+                    comments={comments}
+                    addComment={addComment}
+                    editComment={editComment}
+                    deleteComment={deleteComment}
+                    authors={authors}
+                    me={me}
+                    permissions={permissions}
+                  />
+                )
+              }
+            })}
+          </Box>
+        </Main>
+      )
+    } else {
+      return (
+        <FullPage>
+          <div style={{ width: "30%" }}>
+            <img
+              src={
+                "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
+              }
+              alt="Empty Image"
+            />
+          </div>
+          <IntroText>
+            Click on one of the Explores to the left to begin searching through
+            your data. You’ll see labels, descriptions, SQL definitions, and more
+            for each field.
         </IntroText>
-      </FullPage>
-    )
+        </FullPage>
+      )
+    }
   }
-}

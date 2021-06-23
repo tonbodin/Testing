@@ -28,6 +28,7 @@ import React from "react"
 import * as ReactDOM from "react-dom"
 import { Extension } from "./components/Extension"
 import { ExtensionProvider } from "@looker/extension-sdk-react"
+import "./components/styles.css"
 
 window.addEventListener("DOMContentLoaded", () => {
   const root = document.createElement("div")

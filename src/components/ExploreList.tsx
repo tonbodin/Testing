@@ -107,7 +107,7 @@ const CustomLink = styled(MenuItem as any)`
   &.active,
   &:hover,
   &:focus {
-    background-color: ${theme.colors.keySubtle};
+    background-color: #2A2E39;
     color: ${theme.colors.key};
     text-decoration: none;
   }

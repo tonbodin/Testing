@@ -56,7 +56,7 @@ export const ViewOptions: React.FC<{
   return (
     <Popover
       content={
-        <PopoverContent p="xsmall" width="150px">
+        <PopoverContent style={{ backgroundColor: "#2A2E39" }} p="xsmall" width="150px">
           {columns.map(column => {
             return (
               <FieldCheckbox
@@ -75,7 +75,17 @@ export const ViewOptions: React.FC<{
         </PopoverContent>
       }
     >
-      <ButtonOutline aria-haspopup="true">View Options</ButtonOutline>
+      <ButtonOutline
+        style={{
+          backgroundColor: "#1f2436",
+          color: "#9B9EA3",
+          marginLeft: "27px",
+          borderColor: "9B9EA3"
+        }}
+        aria-haspopup="true"
+      >
+        View Options
+      </ButtonOutline>
     </Popover>
   )
 }
