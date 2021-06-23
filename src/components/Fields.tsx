@@ -24,7 +24,13 @@
 
  */
 
-import React from "react"
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useContext,
+  Component
+} from "react"
 import {
   Box,
   Flex,
@@ -96,28 +102,62 @@ export const Fields: React.FC<{
   permissions
 }) => {
   const [tab, setTab] = React.useState(DETAILS_PANE)
+
+  useEffect(() => {
+    //setting color of text of table body 
+    var tablebodies = document.getElementsByTagName('tbody') as HTMLCollection; //collection of tablebody elements
+    for (let i = 0; i < tablebodies.length; i++) {
+      var tablebody = tablebodies[i]; //each tablebody element
+      for (let j = 0; j < tablebody.children.length; j++) { //first layer of children (each row)
+        var tablerow = tablebody.children[j] as HTMLElement;
+        var sqltext1 = tablerow.children[tablerow.children.length - 1].children[0].children[0] as HTMLElement;
+        sqltext1.style.color = "green";
+
+        //changing the color of the "SQL" column
+        if (sqltext1.children.length > 0) {
+          for (let k = 0; k < sqltext1.children.length; k++) {
+            var sqltext2 = sqltext1.children[k] as HTMLElement;
+            sqltext2.style.color = "green";
+          }
+        }
+
+        var icon = tablerow.children[0] as HTMLElement;
+        icon.style.borderColor = "#95b1d6" //table border color
+
+        //second later of children (each field within a row)
+        for (let k = 1; k < tablerow.children.length; k++) {
+          var rowcontent = tablerow.children[k] as HTMLElement;
+          rowcontent.style.borderColor = "#95b1d6"; //table border color
+          rowcontent.style.color = "green";
+        }
+      }
+    }
+  })
+
   return (
     <TableWrapper p="xxlarge">
       <Flex>
         <FlexItem>
-          <Heading as="h2" fontWeight="semiBold" mb="large">
-            {label}
+          {/* controls color of heading of table */}
+          <Heading as="h2" fontWeight="semiBold" mb="large" style={{color: 'green'}}> 
+            {label} 
           </Heading>
         </FlexItem>
       </Flex>
       <Flex flexDirection="column">
-        <Table width="100%">
+        <Table style={{backgroundColor: '#21283c'}} width="100%">
           <TableHead>
             <TableRow>
               {columns.map(column => {
                 if (shownColumns.includes(column.rowValueDescriptor)) {
                   return (
+                    //controls color of table header row
                     <StickyHeader
                       key={column.label}
-                      backgroundColor="ui1"
+                      backgroundColor="#1c2231"
                       fontWeight="medium"
-                      color="text"
-                      fontSize="small"
+                      color="green"
+                      fontSize="large"  
                       p="medium"
                       pl="small"
                     >
@@ -128,7 +168,7 @@ export const Fields: React.FC<{
               })}
             </TableRow>
           </TableHead>
-          <TableBody fontSize="small">
+          <TableBody id ="tablebodyelem" fontSize="small">
             {fields.map(field => {
               if (
                 !search ||

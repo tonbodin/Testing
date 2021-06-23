@@ -213,7 +213,7 @@ export const DataDictionary: React.FC<{}> = () => {
           </FlexItem>
         </PageHeader> */}
         <PageLayout open={sidebarOpen}>
-          <LayoutSidebar>
+          <LayoutSidebar style={​​​​​​​​{​​​​​​​​backgroundColor: "#1c2231"}​​​​​​​​}​​​​​​​​ >
             {sidebarOpen && (
               <Sidebar
                 currentExplore={currentExplore}
