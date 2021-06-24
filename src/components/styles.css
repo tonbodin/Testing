@@ -94,9 +94,10 @@ svg {
 }
 
 body {
-  background-color: #131722;
+  background-color: #181d29;
 }
 
 span {
-  color: green;
+  color: #9B9EA3;
+  font-size: 17;
 }

@@ -55,7 +55,7 @@ import { DetailDrawer } from "./DetailDrawer"
 import { DETAILS_PANE } from "../utils/constants"
 
 export const TableWrapper = styled(Box as any)`
-  border-bottom: 0.5px solid ${theme.colors.ui2};
+  border-bottom: 0.5px solid red;
 
   &:last-child {
     border-bottom: none;
@@ -111,13 +111,13 @@ export const Fields: React.FC<{
       for (let j = 0; j < tablebody.children.length; j++) { //first layer of children (each row)
         var tablerow = tablebody.children[j] as HTMLElement;
         var sqltext1 = tablerow.children[tablerow.children.length - 1].children[0].children[0] as HTMLElement;
-        sqltext1.style.color = "green";
+        sqltext1.style.color = "#9B9EA3";
 
         //changing the color of the "SQL" column
         if (sqltext1.children.length > 0) {
           for (let k = 0; k < sqltext1.children.length; k++) {
             var sqltext2 = sqltext1.children[k] as HTMLElement;
-            sqltext2.style.color = "green";
+            sqltext2.style.color = "#9B9EA3";
           }
         }
 
@@ -128,7 +128,7 @@ export const Fields: React.FC<{
         for (let k = 1; k < tablerow.children.length; k++) {
           var rowcontent = tablerow.children[k] as HTMLElement;
           rowcontent.style.borderColor = "#95b1d6"; //table border color
-          rowcontent.style.color = "green";
+          rowcontent.style.color = "#9B9EA3";
         }
       }
     }
@@ -139,7 +139,7 @@ export const Fields: React.FC<{
       <Flex>
         <FlexItem>
           {/* controls color of heading of table */}
-          <Heading as="h2" fontWeight="semiBold" mb="large" style={{color: 'green'}}> 
+          <Heading as="h2" fontWeight="semiBold" mb="large" style={{color: '#9399a0', fontSize: '34'}}> 
             {label} 
           </Heading>
         </FlexItem>
@@ -156,8 +156,8 @@ export const Fields: React.FC<{
                       key={column.label}
                       backgroundColor="#1c2231"
                       fontWeight="medium"
-                      color="green"
-                      fontSize="large"  
+                      color="#9399a0"
+                      fontSize="xxlarge"  
                       p="medium"
                       pl="small"
                     >
@@ -168,7 +168,7 @@ export const Fields: React.FC<{
               })}
             </TableRow>
           </TableHead>
-          <TableBody id ="tablebodyelem" fontSize="small">
+          <TableBody id ="tablebodyelem" fontSize="large">
             {fields.map(field => {
               if (
                 !search ||

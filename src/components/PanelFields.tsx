@@ -223,21 +223,21 @@ export const PanelFields: React.FC<{
             pr="xxlarge"
           >
             <FlexItem>
-              <Heading as="h1" fontWeight="semiBold" style={{ color: "green" }}>
+              <Heading as="h1" fontWeight="semiBold" style={{ color: "#9399a0" }}>
                 {currentModel.label}
               </Heading>
-              <Heading as="h4" variant="secondary" style={{ color: "green" }}>
+              <Heading as="h4" variant="secondary" style={{ color: "#9399a0" }}>
                 Select a field for more information.
             </Heading>
             </FlexItem>
-            <FlexItem style={{ width: "290px" }} >
+            <FlexItem style={{ width: "320px" }} >
               <ExternalLink
                 style={{ textDecoration: "none" }}
                 target="_blank" href={exploreURL(currentExplore)}
                 onMouseEnter={highlightBackground}
                 onMouseLeave={unhighlightBackground}
               >
-                <ButtonOutline style={{ backgroundColor: "#1f2436", borderColor: "#9B9EA3", color: "#9B9EA3" }} width="130px" >
+                <ButtonOutline style={{ backgroundColor: "#1f2436", borderColor: "#9B9EA3", color: "#9B9EA3", fontSize: "16px" }} width="130px" >
                   Explore
                 </ButtonOutline>
               </ExternalLink>

@@ -200,20 +200,8 @@ export const DataDictionary: React.FC<{}> = () => {
   return (
     <ThemeProvider theme={theme}>
       <div style={{ minWidth: "1200px" }}>
-        {/* <PageHeader>
-          <FlexItem>
-            <Heading
-              as="h1"
-              fontSize="xlarge"
-              fontWeight="semiBold"
-              mb="xsmall"
-            >
-              Data Dictionary
-            </Heading>
-          </FlexItem>
-        </PageHeader> */}
         <PageLayout open={sidebarOpen}>
-          <LayoutSidebar style={​​​​​​​​{​​​​​​​​backgroundColor: "#1c2231"}​​​​​​​​}​​​​​​​​ >
+          <LayoutSidebar >
             {sidebarOpen && (
               <Sidebar
                 currentExplore={currentExplore}
@@ -225,7 +213,7 @@ export const DataDictionary: React.FC<{}> = () => {
               />
             )}
           </LayoutSidebar>
-          <SidebarDivider open={sidebarOpen}>
+          <SidebarDivider open={sidebarOpen} >
             <SidebarToggle
               isOpen={sidebarOpen}
               onClick={toggleFn}

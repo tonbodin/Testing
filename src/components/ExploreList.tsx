@@ -58,7 +58,7 @@ export const ExploreList: React.FC<{
   const currentModel = useCurrentModel()
   const history = useHistory()
   return (
-    <FlexItem pt="xlarge">
+    <FlexItem style={{ paddingTop: "15px" }}>
       <List>
         {currentModel &&
           currentModel.explores.map((explore: any) => {
@@ -107,7 +107,7 @@ const CustomLink = styled(MenuItem as any)`
   &.active,
   &:hover,
   &:focus {
-    background-color: #2A2E39;
+    background-color: #49494a;
     color: ${theme.colors.key};
     text-decoration: none;
   }

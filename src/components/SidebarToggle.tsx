@@ -24,7 +24,7 @@
 
  */
 
-import React, { FC } from "react"
+import React, { useEffect, FC } from "react"
 import { IconButton, IconNames } from "@looker/components"
 import styled from "styled-components"
 
@@ -41,9 +41,17 @@ const SidebarToggle: FC<SidebarToggleProps> = ({
 }) => {
   const iconName: IconNames = isOpen ? "CaretLeft" : "CaretRight"
 
+  useEffect(() => {
+    // Setting properties of elements in sidebar after components mount onto DOM
+
+
+  })
+
   return (
     <SidebarToggleWrapper headerHeight={headerHeight}>
       <IconButton
+        id="okay"
+        style={{ background: "#71a5ea" }}
         shape="round"
         icon={iconName}
         onClick={onClick}

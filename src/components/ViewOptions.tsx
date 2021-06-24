@@ -24,7 +24,7 @@
 
  */
 
-import React, { SyntheticEvent } from "react"
+import React, { useEffect, SyntheticEvent } from "react"
 import {
   ButtonOutline,
   FieldCheckbox,
@@ -48,15 +48,41 @@ const checkChange = (
   }
 }
 
+function highlightBackground(e: any) {
+  e.target.style.backgroundColor = "#2A2E39"
+}
+
+function unhighlightBackground(e: any) {
+  e.target.style.backgroundColor = "#1f2436"
+}
+
 export const ViewOptions: React.FC<{
   columns: ColumnDescriptor[]
   shownColumns: string[]
   setShownColumns: (newState: string[]) => void
 }> = ({ columns, shownColumns, setShownColumns }) => {
+
+  // useEffect(() => {
+  //   // Setting properties of elements in sidebar after components mount onto DOM
+  //   var pop = document.getElementById('popovercontent')
+  //   if (pop != null) {
+  //     var popContent = document.getElementById('popovercontent').children as HTMLCollection;
+  //     for (let i = 0; i < popContent.length; i++) {
+  //       let span = popContent[i].children[0] as HTMLElement;
+  //       span.style.color = "#9B9EA3";
+  //     }
+  //   }
+  // })
+
   return (
     <Popover
       content={
-        <PopoverContent style={{ backgroundColor: "#2A2E39" }} p="xsmall" width="150px">
+        <PopoverContent
+          id="popovercontent"
+          style={{ backgroundColor: "#c4ccd8" }}
+          p="xsmall"
+          width="150px"
+        >
           {columns.map(column => {
             return (
               <FieldCheckbox
@@ -76,11 +102,14 @@ export const ViewOptions: React.FC<{
       }
     >
       <ButtonOutline
+        onMouseEnter={highlightBackground}
+        onMouseLeave={unhighlightBackground}
         style={{
           backgroundColor: "#1f2436",
           color: "#9B9EA3",
           marginLeft: "27px",
-          borderColor: "9B9EA3"
+          borderColor: "9B9EA3",
+          fontSize: "16px"
         }}
         aria-haspopup="true"
       >

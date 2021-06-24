@@ -47,7 +47,7 @@ const TableRowCustom = styled(TableRow as any)`
   transition: background-color 0.3s ease;
   &.active,
   &:hover {
-    background-color: ${theme.colors.ui1};
+    background-color: #49494a;
   }
 
   .disabled {
