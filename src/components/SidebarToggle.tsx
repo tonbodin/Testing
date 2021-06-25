@@ -51,7 +51,7 @@ const SidebarToggle: FC<SidebarToggleProps> = ({
     <SidebarToggleWrapper headerHeight={headerHeight}>
       <IconButton
         id="okay"
-        style={{ background: "#71a5ea" }}
+        style={{ background: "#1c1d1f" }}
         shape="round"
         icon={iconName}
         onClick={onClick}

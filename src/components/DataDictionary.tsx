@@ -280,13 +280,13 @@ const LayoutSidebar = styled.aside`
 
 const SidebarDivider = styled.div<SidebarStyleProps>`
   transition: border 0.3s;
-  border-left: 1px solid
-    ${({ theme, open }) => (open ? theme.colors.ui2 : "transparent")};
+  border-left: 1px solid #6c6c6c;
+    // ${({ theme, open }) => (open ? theme.colors.ui2 : "transparent")};
   grid-area: divider;
   overflow: visible;
   position: relative;
   &:hover {
-    border-left: 1px solid
-      ${({ theme, open }) => (open ? theme.colors.ui2 : theme.colors.ui4)};
+    border-left: 1px solid #6c6c6c;
+      // ${({ theme, open }) => (open ? theme.colors.ui2 : theme.colors.ui4)};
   }
 `

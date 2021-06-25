@@ -233,7 +233,8 @@ export const PanelFields: React.FC<{
             <FlexItem style={{ width: "320px" }} >
               <ExternalLink
                 style={{ textDecoration: "none" }}
-                target="_blank" href={exploreURL(currentExplore)}
+                target="_blank" 
+                href={exploreURL(currentExplore)}
                 onMouseEnter={highlightBackground}
                 onMouseLeave={unhighlightBackground}
               >
@@ -253,6 +254,7 @@ export const PanelFields: React.FC<{
           <Flex mt="6px" pl="xxlarge" pr="xxlarge">
             <FlexItem width="350px">
               <ExploreSearch
+                style={{ background: "#d1d6e6" }}
                 hideSearchIcon
                 placeholder="Filter fields in this Explore"
                 mt="medium"
@@ -260,7 +262,6 @@ export const PanelFields: React.FC<{
                   setSearch(e.target.value)
                 }}
                 value={search}
-                style={{backgroundColor: '#d1d6e6'}}
               />
             </FlexItem>
           </Flex>

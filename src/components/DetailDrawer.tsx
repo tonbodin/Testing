@@ -24,7 +24,7 @@
 
  */
 
-import React from "react"
+import React, { useEffect } from "react"
 import { theme, Drawer, TableRow, TableDataCell } from "@looker/components"
 import styled from "styled-components"
 import {
@@ -95,140 +95,145 @@ export const DetailDrawer: React.FC<{
   me,
   permissions
 }) => {
-  const history = useHistory()
-  const path = usePathNames()
+    const history = useHistory()
+    const path = usePathNames()
 
-  const parsedComments = JSON.parse(comments)
+    const parsedComments = JSON.parse(comments)
 
-  const getFieldCommentsLength = (field: string) => {
-    const exploreComments = parsedComments[explore.name]
-      ? parsedComments[explore.name]
-      : {}
-    const commentFields = Object.keys(exploreComments)
-    if (commentFields.includes(field) && exploreComments[field].length > 0) {
-      return exploreComments[field].length
-    } else {
-      return null
-    }
-  }
-
-  const fieldComments =
-    (parsedComments[explore.name] &&
-      parsedComments[explore.name][field.name]) ||
-    []
-  const sortedComments = fieldComments.sort(
-    (x: FieldComments, y: FieldComments) => {
-      return x.timestamp - y.timestamp
-    }
-  )
-
-  const canViewComments = () => {
-    if (permissions.disabled) {
-      return false
-    } else {
-      return (
-        (permissions.reader && sortedComments.length > 0) ||
-        permissions.writer ||
-        permissions.manager
-      )
-    }
-  }
-
-  function paneUrl(pane: number) {
-    field &&
-      history.push(
-        internalExploreURL({
-          model: explore.model_name,
-          explore: explore.name,
-          field: field.name,
-          tab: pane.toString()
-        })
-      )
-  }
-
-  function closePaneUrl() {
-    field &&
-      history.push(
-        internalExploreURL({
-          model: explore.model_name,
-          explore: explore.name
-        })
-      )
-  }
-
-  function detailsPane() {
-    paneUrl(DETAILS_PANE)
-    setTab(DETAILS_PANE)
-  }
-
-  function commentsPane() {
-    canViewComments() && paneUrl(COMMENTS_PANE)
-    canViewComments() && setTab(COMMENTS_PANE)
-  }
-
-  return (
-    <Drawer
-      content={
-        <FieldMetadata
-          field={field}
-          columns={columns}
-          explore={explore}
-          key={field.name}
-          model={model}
-          tab={path.detailPane ? parseInt(path.detailPane) : tab}
-          detailsPane={detailsPane}
-          commentsPane={commentsPane}
-          sortedComments={sortedComments}
-          addComment={addComment}
-          editComment={editComment}
-          deleteComment={deleteComment}
-          fieldCommentLength={getFieldCommentsLength(field.name)}
-          commentAuthors={authors}
-          me={me}
-          permissions={permissions}
-          canViewComments={canViewComments()}
-        />
+    const getFieldCommentsLength = (field: string) => {
+      const exploreComments = parsedComments[explore.name]
+        ? parsedComments[explore.name]
+        : {}
+      const commentFields = Object.keys(exploreComments)
+      if (commentFields.includes(field) && exploreComments[field].length > 0) {
+        return exploreComments[field].length
+      } else {
+        return null
       }
-      isOpen={field.name === path.fieldName}
-      onClose={closePaneUrl}
-    >
-      <TableRowCustom>
-        {columns.map(({ Formatter, ...props }) => {
-          if (shownColumns.includes(props.rowValueDescriptor)) {
-            const unformattedValue =
-              field[props.rowValueDescriptor as keyof ILookmlModelExploreField]
-            const displayValue = unformattedValue
-              ? String(unformattedValue)
-              : undefined
-            return (
-              <TableDataCell
-                color="text3"
-                p="medium"
-                pl="small"
-                fontWeight="normal"
-                key={props.rowValueDescriptor}
-                maxWidth={props.maxWidth}
-                minWidth={props.minWidth}
-                onClick={
-                  props.rowValueDescriptor === "comment"
-                    ? commentsPane
-                    : detailsPane
-                }
-              >
-                <Formatter
-                  x={displayValue}
-                  isRow={true}
-                  field={field}
-                  commentCount={getFieldCommentsLength(field.name)}
-                  canComment={canViewComments()}
-                  reader={permissions.reader}
-                  tags={unformattedValue as string[]}
-                />
-              </TableDataCell>
-            )
-          }
-        })}
-      </TableRowCustom>
-    </Drawer>
-  )
-}
+    }
+
+    const fieldComments =
+      (parsedComments[explore.name] &&
+        parsedComments[explore.name][field.name]) ||
+      []
+    const sortedComments = fieldComments.sort(
+      (x: FieldComments, y: FieldComments) => {
+        return x.timestamp - y.timestamp
+      }
+    )
+
+    const canViewComments = () => {
+      if (permissions.disabled) {
+        return false
+      } else {
+        return (
+          (permissions.reader && sortedComments.length > 0) ||
+          permissions.writer ||
+          permissions.manager
+        )
+      }
+    }
+
+    function paneUrl(pane: number) {
+      field &&
+        history.push(
+          internalExploreURL({
+            model: explore.model_name,
+            explore: explore.name,
+            field: field.name,
+            tab: pane.toString()
+          })
+        )
+    }
+
+    function closePaneUrl() {
+      field &&
+        history.push(
+          internalExploreURL({
+            model: explore.model_name,
+            explore: explore.name
+          })
+        )
+    }
+
+    function detailsPane() {
+      paneUrl(DETAILS_PANE)
+      setTab(DETAILS_PANE)
+    }
+
+    function commentsPane() {
+      canViewComments() && paneUrl(COMMENTS_PANE)
+      canViewComments() && setTab(COMMENTS_PANE)
+    }
+
+    // useEffect(() => {
+    //   console.log("hi")
+    // })
+
+    return (
+      <Drawer
+        content={
+          <FieldMetadata
+            
+            field={field}
+            columns={columns}
+            explore={explore}
+            key={field.name}
+            model={model}
+            tab={path.detailPane ? parseInt(path.detailPane) : tab}
+            detailsPane={detailsPane}
+            commentsPane={commentsPane}
+            sortedComments={sortedComments}
+            addComment={addComment}
+            editComment={editComment}
+            deleteComment={deleteComment}
+            fieldCommentLength={getFieldCommentsLength(field.name)}
+            commentAuthors={authors}
+            me={me}
+            permissions={permissions}
+            canViewComments={canViewComments()}
+          />
+        }
+        isOpen={field.name === path.fieldName}
+        onClose={closePaneUrl}
+      >
+        <TableRowCustom >
+          {columns.map(({ Formatter, ...props }) => {
+            if (shownColumns.includes(props.rowValueDescriptor)) {
+              const unformattedValue =
+                field[props.rowValueDescriptor as keyof ILookmlModelExploreField]
+              const displayValue = unformattedValue
+                ? String(unformattedValue)
+                : undefined
+              return (
+                <TableDataCell
+                  color="text3"
+                  p="medium"
+                  pl="small"
+                  fontWeight="normal"
+                  key={props.rowValueDescriptor}
+                  maxWidth={props.maxWidth}
+                  minWidth={props.minWidth}
+                  onClick={
+                    props.rowValueDescriptor === "comment"
+                      ? commentsPane
+                      : detailsPane
+                  }
+                >
+                  <Formatter
+                    x={displayValue}
+                    isRow={true}
+                    field={field}
+                    commentCount={getFieldCommentsLength(field.name)}
+                    canComment={canViewComments()}
+                    reader={permissions.reader}
+                    tags={unformattedValue as string[]}
+                  />
+                </TableDataCell>
+              )
+            }
+          })}
+        </TableRowCustom>
+      </Drawer>
+    )
+  }
