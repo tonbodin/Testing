@@ -260,6 +260,7 @@ export const PanelFields: React.FC<{
                   setSearch(e.target.value)
                 }}
                 value={search}
+                style={{backgroundColor: '#d1d6e6'}}
               />
             </FlexItem>
           </Flex>

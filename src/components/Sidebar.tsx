@@ -89,9 +89,13 @@ export const Sidebar: React.FC<{
       inputBox2text.style.color = "#131722"
       inputBox2text.style.fontSize = "17"
 
+
+      var border = document.getElementById('sidebarflex2').parentElement.parentElement.parentElement.childNodes[1] as HTMLElement;
+      border.style.borderColor = "blue"
+
       return () => {
         var asideTag = document.getElementById('sidebarflex1').parentNode.parentNode as HTMLElement;
-        asideTag.style.backgroundColor = "#131722"
+        asideTag.style.backgroundColor = "#181d29"
       }
     }, [])
 
