@@ -28,9 +28,11 @@ import React, { FC, useEffect } from "react"
 import {
   Chip,
   Flex,
+  Space,
   FlexItem,
   Heading,
   Spinner,
+  Text as DefaultTextTag,
   theme
 } from "@looker/components"
 import humanize from "humanize-string"
@@ -160,6 +162,14 @@ export const columns: ColumnDescriptor[] = [
   }
 ]
 
+const headerStyle = {
+  // backgroundColor: "#131722",
+  backgroundColor: '#131315',
+  borderBottom: 'solid',
+  borderBottomColor: '#6c6c6c',
+  borderBottomWidth: '1px',
+}
+
 export const DataDictionary: React.FC<{}> = () => {
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
@@ -199,6 +209,11 @@ export const DataDictionary: React.FC<{}> = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Space style={headerStyle} width="100%" height="85px" around>
+        <span style={{ fontSize: "45", color: "#9B9EA3", lineHeight: "normal" }} >
+          Data Dictionary
+        </span>
+      </Space>
       <div style={{ minWidth: "1200px" }}>
         <PageLayout open={sidebarOpen}>
           <LayoutSidebar >

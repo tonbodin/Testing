@@ -35,7 +35,8 @@ import {
   InputSearch,
   Paragraph,
   Spinner,
-  theme
+  theme,
+  Space
 } from "@looker/components"
 import { ViewOptions } from "./ViewOptions"
 import styled from "styled-components"
