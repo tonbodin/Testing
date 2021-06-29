@@ -28,11 +28,10 @@ import React, { FC, useEffect } from "react"
 import {
   Chip,
   Flex,
-  Space,
   FlexItem,
   Heading,
   Spinner,
-  Text as DefaultTextTag,
+  Space,
   theme
 } from "@looker/components"
 import humanize from "humanize-string"
@@ -53,6 +52,14 @@ import { CommentIcon } from "./CommentIcon"
 
 import { NoModelsAvailable } from "./NoModelsAvailable"
 import { CategorizedLabel } from "./CategorizedLabel"
+
+const headerStyle = {
+  // backgroundColor: "#131722",
+  backgroundColor: '#131315',
+  borderBottom: 'solid',
+  borderBottomColor: '#6c6c6c',
+  borderBottomWidth: '1px',
+}
 
 export const columns: ColumnDescriptor[] = [
   {
@@ -161,14 +168,6 @@ export const columns: ColumnDescriptor[] = [
     default: false
   }
 ]
-
-const headerStyle = {
-  // backgroundColor: "#131722",
-  backgroundColor: '#131315',
-  borderBottom: 'solid',
-  borderBottomColor: '#6c6c6c',
-  borderBottomWidth: '1px',
-}
 
 export const DataDictionary: React.FC<{}> = () => {
   const unfilteredModels = useAllModels()
